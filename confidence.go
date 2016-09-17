@@ -15,17 +15,29 @@ func evaluateConfidence(correct int, questions int, statedConfidence float64) st
 	pRight := (1 - binomCDF(float64(correct-1), float64(questions), statedConfidence)) * 2
 	factor := (float64(correct) / float64(questions)) / statedConfidence
 
-	if pLeft <= 0.05 {
-		message = fmt.Sprintf("You're significantly overconfident (p < %g), with an estimated factor of %.1fX",
-			roundP(pLeft), 1/factor)
-	} else if pRight <= 0.05 {
-		message = fmt.Sprintf("You're significantly underconfident (p < %g), with an estimated factor of %.1fX",
-			roundP(pRight), factor)
+	if pLeft <= 0.2 {
+		message = fmt.Sprintf("You're %s overconfident, by an estimated factor of %.1fX",
+			degree(pLeft), 1/factor)
+	} else if pRight <= 0.2 {
+		message = fmt.Sprintf("You're %s underconfident, by an estimated factor of %.1fX",
+			degree(pRight), factor)
 	} else {
-		message = fmt.Sprintf("You seem to be calibrated very well. Your quota of correct answers is statistically in line with your stated confidence level of %g. Congratulations, you're a shining example of rationality!", statedConfidence)
+		message = fmt.Sprintf("You seem to be calibrated well. Your quota of correct answers is statistically in line with your stated confidence level of %g. Congratulations, you're a shining example of rationality!", stated_confidence)
 	}
 
 	return message
+}
+
+func degree(p float64) string {
+	if p > 0.2 {
+		return "not"
+	} else if (p > 0.05) {
+		return "likely"
+	} else if (p > 0.0001) {
+		return "very likely"
+	} else {
+		return "definitely"
+	}
 }
 
 func roundP(p float64) float64 {
