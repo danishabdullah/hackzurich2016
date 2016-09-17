@@ -1,0 +1,27 @@
+{{ template "header.html" . }}
+
+{{ template "nav.html" . }}
+
+<div class="container">
+
+    <div class="jumbotron">
+        <h3>
+            {{ .Question }}
+        </h3>
+    </div>
+
+    <div class="input-group">
+        <input type="number" class="form-control" placeholder="min">
+        <span class="input-group-addon">–</span>
+        <input type="number" class="form-control" placeholder="max">
+        <span class="input-group-addon">{{ .Unit }}</span>
+    </div>
+
+    <div class="top-buffer">
+        <a href="#cancel" class="btn btn-danger">Cancel game</a>
+        <a href="#next" class="btn btn-success pull-right">Next question</a>
+    </div>
+
+</div>
+
+{{ template "footer.html" . }}
