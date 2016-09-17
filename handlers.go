@@ -25,6 +25,7 @@ func initHandlers(mux *http.ServeMux, templ *template.Template, db QuestionDatab
 	mux.Handle("/play", newGameHandler())
 	mux.Handle("/game/", gameHandler(templ))
 	mux.Handle("/about", simpleHandler(templ, "about.html"))
+	mux.Handle("/help", simpleHandler(templ, "help.html"))
 	mux.Handle("/", simpleHandler(templ, "index.html"))
 }
 
