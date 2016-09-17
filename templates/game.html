@@ -44,13 +44,13 @@
         </div>
         <table class="panel-body table">
             <tbody>
-                {{ range .Answers }}
-                <tr class="{{ . | tableClass }}">
-                    <a href="">
-                        <td>{{ .Question.Text }}</td>
-                    </a>
+                <tr>
+                    {{ range $i, $a := .Answers }}
+                    <td class="text-center {{ $a | tableClass }}">
+                        {{ $i }}
+                    </td>
+                    {{ end }}
                 </tr>
-                {{ end }}
             </tbody>
         </table>
     </div>
