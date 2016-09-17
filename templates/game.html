@@ -18,8 +18,8 @@
     </div>
 
     <div class="top-buffer">
-        <a href="#" class="btn btn-lg btn-danger" id="cancelGame">Cancel game</a>
-        <a href="#" class="btn btn-lg btn-success pull-right" id="nextQuestion">Next question</a>
+        <a href="#cancel" class="btn btn-lg btn-danger" id="cancelGame">Cancel game</a>
+        <a href="#next" class="btn btn-lg btn-success pull-right" id="nextQuestion">Next question</a>
     </div>
 
 </div>
@@ -27,7 +27,7 @@
 <script>
 $(document).ready(function() {
     var questions = {{ .Questions | json }};
-    initGame({{ .ID }}, questions);
+    initGame(questions);
 });
 </script>
 

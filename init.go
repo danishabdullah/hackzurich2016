@@ -20,9 +20,5 @@ func init() {
 		log.Fatalf("Can not read database: %s", err)
 	}
 
-	http.Handle("/api/questions/random", questionHandler(questions))
-
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
-	http.Handle("/play", playHandler(templ, questions))
-	http.Handle("/", indexHandler(templ))
+	initHandlers(http.DefaultServeMux, templ, questions)
 }
