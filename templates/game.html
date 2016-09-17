@@ -4,31 +4,23 @@
 
 <div class="container">
 
-    <div class="jumbotron">
-        <h3 id="question">
-            Question text?
-        </h3>
-    </div>
-
-    <div class="input-group input-group-lg" id="boundGroup">
-        <input type="number" class="form-control" placeholder="min" id="lowerBound">
-        <span class="input-group-addon">–</span>
-        <input type="number" class="form-control" placeholder="max" id="upperBound">
-        <span class="input-group-addon" id="unit">Unit</span>
-    </div>
-
-    <div class="top-buffer">
-        <a href="#cancel" class="btn btn-lg btn-danger" id="cancelGame">Cancel game</a>
-        <a href="#next" class="btn btn-lg btn-success pull-right" id="nextQuestion">Next question</a>
-    </div>
+    <table class="table table-striped">
+        <thead>
+            <th>Question</th>
+            <th>Valid range</th>
+            <th>Your range</th>
+        </thead>
+        <tbody>
+            {{ range .Answers }}
+            <tr class="{{ . | tableClass }}">
+                <td>{{ .Question.Text }}</td>
+                <td>{{ .Question.BoundLow }}&nbsp–&nbsp{{ .Question.BoundHigh }} {{ .Question.Unit }}</td>
+                <td>{{ .LowerBound }} –&nbsp{{ .UpperBound }} {{ .Question.Unit }}</td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
 
 </div>
-
-<script>
-$(document).ready(function() {
-    var questions = {{ .Questions | json }};
-    initGame(questions);
-});
-</script>
 
 {{ template "footer.html" . }}

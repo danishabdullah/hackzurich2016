@@ -24,10 +24,14 @@
 
 </div>
 
+<form method="post" action="/game/{{ .ID }}" id="gameForm">
+    <input type="hidden" name="data" id="formData" />
+</form>
+
 <script>
 $(document).ready(function() {
     var questions = {{ .Questions | json }};
-    initGame({{ .ID }}, questions);
+    initGame(questions);
 });
 </script>
 

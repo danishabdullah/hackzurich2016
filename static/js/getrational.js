@@ -1,6 +1,6 @@
 "use strict";
 
-function initGame(gameID, questions) {
+function initGame(questions) {
     var questionField = $("#question"),
         unitField = $("#unit"),
         nextButton = $("#nextQuestion"),
@@ -30,9 +30,9 @@ function initGame(gameID, questions) {
 
         answers[idx] = {
             "question": questions[idx],
-            "lower": minField.val(),
-            "upper": maxField.val(),
-        };
+            "lower": parseInt(minField.val()),
+            "upper": parseInt(maxField.val()),
+        }
 
         if (idx < questions.length - 1) {
             idx++;
@@ -46,17 +46,8 @@ function initGame(gameID, questions) {
         } else {
             nextButton.attr("disabled", "disabled");
 
-            $.ajax({
-                type: "POST",
-                url: "/game/" + gameID,
-                data: answers,
-                success: function() {},
-                dataType: "json"
-            }).fail(function(error) {
-                console.log(error);
-            }).always(function() {
-                nextButton.removeAttr("disabled");
-            })
+            $("#formData").val(JSON.stringify(answers));
+            $("#gameForm").submit();
         }
     });
 }

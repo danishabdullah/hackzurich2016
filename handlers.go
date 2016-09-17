@@ -4,15 +4,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"path"
+	"strings"
 
 	"github.com/pborman/uuid"
 )
 
 // NumQuestions contains the number of questions for a single round.
-const NumQuestions = 1
+const NumQuestions = 10
 
 func initHandlers(mux *http.ServeMux, templ *template.Template, db QuestionDatabase) {
 	mux.Handle("/api/questions/random", questionHandler(db))
@@ -69,9 +72,9 @@ func questionHandler(db QuestionDatabase) http.Handler {
 
 // Answer contains the information about an answer given by the user.
 type Answer struct {
-	Question   Question
-	LowerBound uint64
-	UpperBound uint64
+	Question   Question `json:"question"`
+	LowerBound uint64   `json:"lower"`
+	UpperBound uint64   `json:"upper"`
 }
 
 type gameContext struct {
@@ -86,11 +89,26 @@ func gameHandler(templ *template.Template) http.Handler {
 		}
 		defer r.Body.Close()
 
+		bytes, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error reading request: %s", err), http.StatusBadRequest)
+			return
+		}
+
+		raw := strings.TrimPrefix(string(bytes), "data=")
+		data, err := url.QueryUnescape(raw)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error decoding request: %s", err), http.StatusBadRequest)
+			return
+		}
+
 		var answers []Answer
-		if err := json.NewDecoder(r.Body).Decode(&answers); err != nil {
+		if err := json.Unmarshal([]byte(data), &answers); err != nil {
 			http.Error(w, fmt.Sprintf("Error parsing answers: %s", err), http.StatusBadRequest)
 			return
 		}
+
+		log.Printf("answers: %+v", answers)
 
 		templ.ExecuteTemplate(w, "game.html", gameContext{
 			Answers: answers,
