@@ -33,8 +33,8 @@ function initGame(questions) {
 
         answers[idx] = {
             "question": questions[idx],
-            "lower": parseInt(minField.val()),
-            "upper": parseInt(maxField.val()),
+            "lower": parseFloat(minField.val()),
+            "upper": parseFloat(maxField.val()),
         }
 
         if (idx < questions.length - 1) {
@@ -60,8 +60,8 @@ function isNumber(n) {
 }
 
 function checkInput(minField, maxField) {
-    var lower = parseInt(minField.val()),
-        upper = parseInt(maxField.val()),
+    var lower = parseFloat(minField.val()),
+        upper = parseFloat(maxField.val()),
         lowerNumber = isNumber(lower),
         upperNumber = isNumber(upper),
         lowerLessEqual = lower <= upper;

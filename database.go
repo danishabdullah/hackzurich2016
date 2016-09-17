@@ -11,10 +11,10 @@ import (
 
 // Question is the basic data entity.
 type Question struct {
-	Text      string `json:"text"`
-	Unit      string `json:"unit"`
-	BoundLow  uint64 `json:"boundLow"`
-	BoundHigh uint64 `json:"boundHigh"`
+	Text      string  `json:"text"`
+	Unit      string  `json:"unit"`
+	BoundLow  float64 `json:"boundLow"`
+	BoundHigh float64 `json:"boundHigh"`
 }
 
 func convertRecord(rec []string) (Question, error) {
@@ -35,8 +35,8 @@ func convertRecord(rec []string) (Question, error) {
 	return Question{
 		Text:      rec[0],
 		Unit:      rec[3],
-		BoundLow:  uint64(low),
-		BoundHigh: uint64(high),
+		BoundLow:  low,
+		BoundHigh: high,
 	}, nil
 }
 

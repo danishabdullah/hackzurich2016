@@ -74,8 +74,8 @@ func questionHandler(db QuestionDatabase) http.Handler {
 // Answer contains the information about an answer given by the user.
 type Answer struct {
 	Question   Question `json:"question"`
-	LowerBound uint64   `json:"lower"`
-	UpperBound uint64   `json:"upper"`
+	LowerBound float64  `json:"lower"`
+	UpperBound float64  `json:"upper"`
 }
 
 type gameContext struct {
