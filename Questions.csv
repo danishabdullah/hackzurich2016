@@ -1,14 +1,14 @@
-What is the mass of the sun in terms of the mass of the earth?;332946;332946;Earth Mass
+What is the mass of the sun in terms of the mass of the earth?;332946;332946;Earth Masses
 When was Linux released publicly?;1991;1991;Year
-How many humans are alive today?;7400000000;7500000000;Humans
+How many humans are alive today?;7.4;7.5;Billion Humans
 Which year did github host > 10 million repos?;2013;2013;Year
-How many humans have ever lived;106000000000;108000000000;Humans
+How many humans have ever lived;106;108;Billion Humans
 Which year was the first nuclear bomb detonated?;1945;1945;Year
 What is the sum of the first 16 digits of PI?;80;80;Sum
 How many Redshirts died in Star Trek TOS?;26;26;Deaths
-How far is Voyager away from the Sun?;2e10;21e9;Kilometers
-How many atoms are in the Universe?;1e78;1e82;Atoms
-How many stars are in the Universe?;12e22;3e23;Stars
+How far is Voyager away from the Sun?;20;21;Billion Kilometers
+How many atoms are in the Universe?;78;82;10^x Atoms
+How many stars are in the Universe?;23;23;10^xStars
 How many Pokemons are there today?;721;762;Pokemon
 What's the lowest number that doesn't have it's own Wikipedia page?;261;261;Number
 How many words are in the first Harry Potter book?;76944;76944;Words
@@ -19,21 +19,21 @@ When was the first ad banner online?;1994;1994;Year
 When was the first item sold on ebay?;1995;1995;Year
 When was the first book sold on amazon?;1995;1995;Year
 When was the first youtube video aired?;2005;2005;Year
-How large is the global market for cocaine in USD?;100e9;500e9;USD
-How much water (in cubic kilometers) is there on earth?;14e8;14e8;km3
+How large is the global market for cocaine in USD?;100;500;Billion USD
+How much water (in cubic kilometers) is there on earth?;1400;1400;milion km3
 What was the (original) height of the Cheops pyramide?;146;147;Meter
 How fast is the fastest bird? (maximum speed);400;400;km/h
 How High is the highest mountain?;8848;8848;Meter
 What is the energy output of the sun in watt?;382e24;283e24;Watt
 What is the length of the Amazon river?;6992;6992;Kilometer
 How long is the equator?;40007;40007;Kilometer
-What is the world record in mens 100m?;9580;9580;Miliseconds
-What is the Area of the African continent?;30200000;30200000;Km2
+What is the world record in mens 100m?;9.58;9.58;Seconds
+What is the Area of the African continent?;30.2;30.2;Milion Km2
 In which year was Martin Luther King Jr born?;1929;1929;Year
-What's the volume of the Atlantic Ocean?;354700000;354700000;Km3
-What was the budget of the 3rd Lord of the ring Movie (Return of the King)?;94e6;94e6;USD
-What was the length of the largest known killer whale?;980;980;Centimeter
-What is the speed of light;299792458;299792458;Meter per second
+What's the volume of the Atlantic Ocean?;354.7;354.7;Milion Km3
+What was the budget of the 3rd Lord of the ring Movie (Return of the King)?;94;94;Milion USD
+What was the length of the largest known killer whale?;9.8;9.8;Meter
+What is the speed of light;299792.458;299792.458;Kilometer per second
 What's the percentage of Hydrogen in the Sun (by mass)?;70;70;Percent
 What is the diameter of the milky way?;100000;100000;Lightyears
 What voltage is given off by an amazonian electric eel?;650;650;Volt
@@ -47,12 +47,12 @@ Which year was the formula 1 hosted in India for the first time?;2011;2011;Year
 When did Winston Churchill retire as the british prime minister?;1955;1955;Year
 Which year did the British navy defeat the Spanish navy in the battle of Trafalgar?;1805;1805;Year
 How many patents did Thomas A. Edison make?;1300;1300;Patents
-How many pieces of paper does the IRS process in a given year?;2e9;2e9;Pieces
-How many people have sex on an average day globally?;120e6;120e6;Sex acts
+How many pieces of paper does the IRS process in a given year?;2000;2000;Milion Pieces
+How many people have sex on an average day globally?;120;120;Milion Sex acts
 How many people choke to death on ball point pens every year?;100;100;Deaths
 Which percentage of global salt production is used to de-ice American roads?;10;10;percent
-How many book titles were published in the US since 1776?;22e6;22e6;Books
-What was the weight of the heaviest blue whale on record?;170000;170000;tons
+How many book titles were published in the US since 1776?;22000;22000;Thousand Books
+What was the weight of the heaviest blue whale on record?;170;170;tons
 How many children are born per day (in 2014)?;353000;353000;Children
 How many numbers up to 1 million are primes?;78498;78498;Primes
 How many teeth does a bear have?;42;42;Teeth
@@ -61,3 +61,37 @@ How many states are members of the UN (in 2016)?;193;193;States
 George W. Bush was the how manyth president of the US?;43;43;Number
 How many string quartets did Mozart compose?;26;26;Number
 How many masses did Mozart compose?;15;15;Number
+The first 50-star U.S. flag was officially raised on July 4 of this year;1960;1960;Year
+Number of lines in Shakespeare's poem that starts "Shall I compare thee to a summer's day?";14;14;Lines
+The 13th Amendment, which abolished slavery, was ratified in this year;1865;1865;Year
+To test for visual acuity, the Snellen chart is designed to be read from this many feet away;20;20;Feet
+How many earth years does Uranus need around the sun;84;84;Years
+The age of Michael Kearney in 1994 when he became the USA's youngest college graduate;10;10;Age
+The year Princeton began to admit women as undergraduates;1969;1969;Year
+Year of the first Super Bowl;1967;1967;Year
+Year in which Franklin Roosevelt was elected for an unprecedented 3rd term as president;1940;1940;Year
+Year in which Boeing introduced 747;1970;1970;Year
+Including wisdom teeth, the number of teeth typically found in the fully developed adult upper jaw;16;16;Teeth
+The weight limit for a standard bowling ball in pounds;16;16;Pounds
+In the last game of the 1961 season, Roger Maris swatted this number home runs;61;61;Home runs
+Number of U.S. presidents named George;3;3;Presidents
+The number of U.S. states that touch the Atlantic Ocean;18;18;States
+The length in miles of the Trans-Alaska Pipeline;800;800;Miles
+Bill Clinton is officially listed as this number U.S. president;42;42;Number
+Number of earth days it takes Mercury to go around the sun;88;88;Days
+Year in which the first wireless message was sent across the Atlantic;1901;1901;Year
+Of the 15 expulsions of senators in the Senate's 215-year history, 11 took place in this year;1861;1861;Year
+Number of humans on Noahs ark;8;8;Humans
+Record weight for a Sunday Times paper, spread over 1,612 pages in pounds;12;12;Pounds
+It's the total number of ounces in a standard six-pack of Pepsi;72;72;Ounces
+Number of Liz Taylor's marriages;8;8;Marriages
+Public laws in 2007 & 2008 will begin with this number;110;110;Number
+Total number of regular season home runs Babe Ruth hit in his career;714;714;Home Runs
+In 1838 Friedrich Bessel first measured a star's distance by using parallax--using observations this many months apart;6;6;Months
+Number of lines in the Elizabeth Barrett Browning poem that begins, "How do I love thee? Let me count the ways";14;14;Number
+Evolution has given the giant panda this many digits on each hand;6;6;Digits
+A filly becomes a mare at this age;4;4;Age
+New York governor Samuel J. Tilden lost the 1876 presidential election by this many electoral votes;1;1;Votes
+To call the White House from one of the 50 states, dial this D.C. area code;202;202;Area Code
+In the U.S. Senate, this many votes are needed to end a filibuster;60;60;Number
+The number of wingbeats per second for the smallest hummingbirds during courtship;200;200;Wingbeats
