@@ -4,18 +4,16 @@
 
 <div class="container">
 
-    <table class="table table-striped">
+    <table class="table table-bordered">
         <thead>
-            <th>Question</th>
-            <th>Valid range</th>
-            <th>Your range</th>
+            <th>Questions</th>
         </thead>
         <tbody>
             {{ range .Answers }}
             <tr class="{{ . | tableClass }}">
-                <td>{{ .Question.Text }}</td>
-                <td>{{ .Question.BoundLow }}&nbsp–&nbsp{{ .Question.BoundHigh }} {{ .Question.Unit }}</td>
-                <td>{{ .LowerBound }} –&nbsp{{ .UpperBound }} {{ .Question.Unit }}</td>
+                <a href="">
+                    <td>{{ .Question.Text }}</td>
+                </a>
             </tr>
             {{ end }}
         </tbody>
