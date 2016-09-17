@@ -28,14 +28,22 @@ func tableClass(a Answer) string {
 }
 
 func answerEvaluation(answers []Answer) string {
+	correct := correctAnswers(answers)
+	return evaluateConfidence(int(correct), len(answers), ExpectedConfidence)
+}
+
+func correctAnswers(answers []Answer) float64 {
 	correct := 0
 	for _, a := range answers {
 		if a.Correct() {
 			correct++
 		}
 	}
+	return float64(correct)
+}
 
-	return evaluateConfidence(correct, len(answers), ExpectedConfidence)
+func targetScore(answers []Answer) float64 {
+	return float64(len(answers)) * ExpectedConfidence
 }
 
 func loadTemplates() (*template.Template, error) {
@@ -44,6 +52,8 @@ func loadTemplates() (*template.Template, error) {
 		"json":       formatJSON,
 		"tableClass": tableClass,
 		"evaluation": answerEvaluation,
+		"correct":    correctAnswers,
+		"target":     targetScore,
 	})
 
 	templ, err := templ.ParseGlob("templates/*")

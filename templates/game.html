@@ -4,24 +4,56 @@
 
 <div class="container">
 
-    <div class="jumbotron">
-        {{ .Answers | evaluation }}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Your evaluation
+        </div>
+        <div class="panel-body">
+            {{ .Answers | evaluation }}
+        </div>
     </div>
 
-    <table class="table table-bordered">
-        <thead>
-            <th>Questions</th>
-        </thead>
-        <tbody>
-            {{ range .Answers }}
-            <tr class="{{ . | tableClass }}">
-                <a href="">
-                    <td>{{ .Question.Text }}</td>
-                </a>
-            </tr>
-            {{ end }}
-        </tbody>
-    </table>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Your score
+        </div>
+        <table class="panel-body table">
+            <tbody>
+                <tr>
+                    <td>Correct</td>
+                    <td>
+                        {{ .Answers | correct }}
+                        {{ $correct := .Answers | correct }}
+                        {{ $target := .Answers | target }}
+                        {{ if lt $correct $target }}
+                        <span class="glyphicon glyphicon glyphicon-download" aria-hidden="true"></span>
+                        {{ else if gt $correct $target }}
+                        <span class="glyphicon glyphicon glyphicon-upload" aria-hidden="true"></span>
+                        {{ end }}
+                    </td>
+                    <td>Target</td>
+                    <td>{{ .Answers | target }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Questions
+        </div>
+        <table class="panel-body table">
+            <tbody>
+                {{ range .Answers }}
+                <tr class="{{ . | tableClass }}">
+                    <a href="">
+                        <td>{{ .Question.Text }}</td>
+                    </a>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
 
 </div>
 
