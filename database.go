@@ -87,3 +87,19 @@ func (db QuestionDatabase) SelectRandom(num int) []Question {
 
 	return result
 }
+
+type GameDatabase map[string][]Answer
+
+func (db GameDatabase) Save(id string, game []Answer) error {
+	db[id] = game
+	return nil
+}
+
+func (db GameDatabase) Get(id string) ([]Answer, error) {
+	game, ok := db[id]
+	if !ok {
+		return []Answer{}, fmt.Errorf("game not found: %s", id)
+	}
+
+	return game, nil
+}

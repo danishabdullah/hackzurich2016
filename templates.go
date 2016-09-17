@@ -28,7 +28,6 @@ func tableClass(a Answer) string {
 		(aLow <= qLow && aHigh >= qLow) ||
 		(aLow <= qHigh && aHigh >= qHigh)
 
-	log.Printf("q: %d - %d a: %d - %d s: %v", qLow, qHigh, aLow, aHigh, success)
 	if success {
 		return "success"
 	}

@@ -15,15 +15,16 @@ import (
 )
 
 // NumQuestions contains the number of questions for a single round.
-const NumQuestions = 10
+const NumQuestions = 2
 
-func initHandlers(mux *http.ServeMux, templ *template.Template, db QuestionDatabase) {
-	mux.Handle("/api/questions/random", questionHandler(db))
+func initHandlers(mux *http.ServeMux, templ *template.Template, questions QuestionDatabase, games GameDatabase) {
+	mux.Handle("/api/questions/random", questionHandler(questions))
 
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
-	mux.Handle("/play/", playHandler(templ, db))
+	mux.Handle("/play/", playHandler(templ, questions))
 	mux.Handle("/play", newGameHandler())
-	mux.Handle("/game/", gameHandler(templ))
+	mux.Handle("/game/", gameHandler(templ, games))
+	mux.Handle("/game", submitHandler(games))
 	mux.Handle("/about", simpleHandler(templ, "about.html"))
 	mux.Handle("/help", simpleHandler(templ, "help.html"))
 	mux.Handle("/", simpleHandler(templ, "index.html"))
@@ -80,10 +81,11 @@ type Answer struct {
 }
 
 type gameContext struct {
-	Answers []Answer
+	ID      string   `json:"id"`
+	Answers []Answer `json:"answers"`
 }
 
-func gameHandler(templ *template.Template) http.Handler {
+func submitHandler(db GameDatabase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Redirect(w, r, "/", http.StatusFound)
@@ -104,16 +106,38 @@ func gameHandler(templ *template.Template) http.Handler {
 			return
 		}
 
-		var answers []Answer
-		if err := json.Unmarshal([]byte(data), &answers); err != nil {
+		var game gameContext
+		if err := json.Unmarshal([]byte(data), &game); err != nil {
 			http.Error(w, fmt.Sprintf("Error parsing answers: %s", err), http.StatusBadRequest)
 			return
 		}
 
-		log.Printf("answers: %+v", answers)
+		if err := db.Save(game.ID, game.Answers); err != nil {
+			http.Error(w, fmt.Sprintf("Error saving game: %s", err), http.StatusInternalServerError)
+			return
+		}
+
+		http.Redirect(w, r, fmt.Sprintf("/game/%s", game.ID), http.StatusFound)
+	})
+}
+
+func gameHandler(templ *template.Template, db GameDatabase) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		id := path.Base(r.URL.Path)
+
+		if len(id) == 0 {
+			http.Redirect(w, r, "/", http.StatusFound)
+		}
+
+		game, err := db.Get(id)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Game can not be loaded: %s", err), http.StatusNotFound)
+			return
+		}
 
 		templ.ExecuteTemplate(w, "game.html", gameContext{
-			Answers: answers,
+			ID:      id,
+			Answers: game,
 		})
 	})
 }

@@ -1,6 +1,6 @@
 "use strict";
 
-function initGame(questions) {
+function initGame(gameID, questions) {
     var questionField = $("#question"),
         gameProgress = $("#gameProgress"),
         unitField = $("#unit"),
@@ -49,7 +49,10 @@ function initGame(questions) {
         } else {
             nextButton.attr("disabled", "disabled");
 
-            $("#formData").val(JSON.stringify(answers));
+            $("#formData").val(JSON.stringify({
+                "id": gameID,
+                "answers": answers
+            }));
             $("#gameForm").submit();
         }
     });

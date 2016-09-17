@@ -20,5 +20,7 @@ func init() {
 		log.Fatalf("Can not read database: %s", err)
 	}
 
-	initHandlers(http.DefaultServeMux, templ, questions)
+	games := make(GameDatabase)
+
+	initHandlers(http.DefaultServeMux, templ, questions, games)
 }
