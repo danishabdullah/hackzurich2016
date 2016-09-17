@@ -31,7 +31,8 @@ func initHandlers(mux *http.ServeMux, templ *template.Template, questions Questi
 	mux.Handle("/game", submitHandler(games))
 	mux.Handle("/lastGame/", lastGameHandler(games))
 	mux.Handle("/about", simpleHandler(templ, "about.html"))
-	mux.Handle("/help", simpleHandler(templ, "help.html"))
+	mux.Handle("/help/overview", simpleHandler(templ, "help-overview.html"))
+	mux.Handle("/help/elements", simpleHandler(templ, "help-elements.html"))
 	mux.Handle("/", simpleHandler(templ, "index.html"))
 }
 

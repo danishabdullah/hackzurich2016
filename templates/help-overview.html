@@ -4,26 +4,26 @@
 
 <div class="container">
 
-    <div class="progress" data-intro="There are ten questions per round. Your progress is shown here.">
+    <div class="progress">
         <div id="gameProgress" class="progress-bar" role="progressbar" style="width: 30%;">30%</div>
     </div>
 
     <div class="jumbotron">
-        <h3 id="question" data-intro="This will show you the current question.">
+        <h3 id="question">
             How many interesting questions are there?
         </h3>
     </div>
 
-    <div class="input-group input-group-lg" id="boundGroup" data-intro="Here you can add your estimation for the question.">
+    <div class="input-group input-group-lg" id="boundGroup">
         <input type="number" class="form-control" placeholder="min" id="lowerBound" value="25">
         <span class="input-group-addon">–</span>
         <input type="number" class="form-control" placeholder="max" id="upperBound" value="30">
-        <span class="input-group-addon" id="unit" data-intro="This shows the unit you are estimating. Keep it in mind while you make your decision.">Questions</span>
+        <span class="input-group-addon" id="unit">Questions</span>
     </div>
 
     <div class="top-buffer">
         <a href="#" class="btn btn-lg btn-danger" id="cancelGame">Cancel game</a>
-        <a href="#" class="btn btn-lg btn-success pull-right" id="nextQuestion" data-intro="If you think your estimation is fine, click here to go to the next question. Keep in mind that you need to be wrong 50% of the time.">Next question</a>
+        <a href="#" class="btn btn-lg btn-success pull-right" id="nextQuestion">Next question</a>
     </div>
 
 </div>
@@ -31,9 +31,16 @@
 <script>
 $(document).ready(function() {
     introJs().oncomplete(function() {
-        window.location.replace("/");
+        window.location.replace("/help/elements");
     }).onexit(function() {
         window.location.replace("/");
+    }).setOptions({
+        skipLabel: "Exit",
+        steps: [
+            {
+                intro: "Hello!"
+            }
+        ]
     }).start();
 });
 </script>
