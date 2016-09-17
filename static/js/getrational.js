@@ -2,6 +2,7 @@
 
 function initGame(questions) {
     var questionField = $("#question"),
+        gameProgress = $("#gameProgress"),
         unitField = $("#unit"),
         nextButton = $("#nextQuestion"),
         fieldGroup = $("#boundGroup"),
@@ -12,6 +13,8 @@ function initGame(questions) {
 
     function updateView(idx) {
         questionField.html(questions[idx].text);
+        gameProgress.html(idx + " / " + questions.length);
+        gameProgress.css("width", (idx / questions.length * 100) + "%" );
         unitField.html(questions[idx].unit);
         minField.val("");
         maxField.val("");
