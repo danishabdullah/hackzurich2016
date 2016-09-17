@@ -20,19 +20,22 @@ func formatJSON(data interface{}) template.JS {
 }
 
 func tableClass(a Answer) string {
-	qLow := a.Question.BoundLow
-	qHigh := a.Question.BoundHigh
-	aLow := a.LowerBound
-	aHigh := a.UpperBound
-	success := (aLow >= qLow && aHigh <= qHigh) ||
-		(aLow <= qLow && aHigh >= qLow) ||
-		(aLow <= qHigh && aHigh >= qHigh)
-
-	if success {
+	if a.Correct() {
 		return "success"
 	}
 
 	return "danger"
+}
+
+func answerEvaluation(answers []Answer) string {
+	correct := 0
+	for _, a := range answers {
+		if a.Correct() {
+			correct++
+		}
+	}
+
+	return evaluateConfidence(correct, len(answers), ExpectedConfidence)
 }
 
 func loadTemplates() (*template.Template, error) {
@@ -40,6 +43,7 @@ func loadTemplates() (*template.Template, error) {
 		"safeHTML":   safeHTML,
 		"json":       formatJSON,
 		"tableClass": tableClass,
+		"evaluation": answerEvaluation,
 	})
 
 	templ, err := templ.ParseGlob("templates/*")

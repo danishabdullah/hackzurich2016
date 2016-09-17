@@ -15,7 +15,10 @@ import (
 )
 
 // NumQuestions contains the number of questions for a single round.
-const NumQuestions = 2
+const NumQuestions = 10
+
+// ExpectedConfidence is the confidence that is expected from the user.
+const ExpectedConfidence = 0.5
 
 func initHandlers(mux *http.ServeMux, templ *template.Template, questions QuestionDatabase, games GameDatabase) {
 	mux.Handle("/api/questions/random", questionHandler(questions))
@@ -78,6 +81,17 @@ type Answer struct {
 	Question   Question `json:"question"`
 	LowerBound float64  `json:"lower"`
 	UpperBound float64  `json:"upper"`
+}
+
+// Correct returns true if the range given in the answer was correct.
+func (a Answer) Correct() bool {
+	qLow := a.Question.BoundLow
+	qHigh := a.Question.BoundHigh
+	aLow := a.LowerBound
+	aHigh := a.UpperBound
+	return (aLow >= qLow && aHigh <= qHigh) ||
+		(aLow <= qLow && aHigh >= qLow) ||
+		(aLow <= qHigh && aHigh >= qHigh)
 }
 
 type gameContext struct {
