@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -33,9 +34,15 @@ func initHandlers(mux *http.ServeMux, templ *template.Template, questions Questi
 	mux.Handle("/", simpleHandler(templ, "index.html"))
 }
 
+func render(templ *template.Template, w io.Writer, name string, value interface{}) {
+	if err := templ.ExecuteTemplate(w, name, value); err != nil {
+		log.Printf("Error rendering template: %s", err)
+	}
+}
+
 func simpleHandler(templ *template.Template, name string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		templ.ExecuteTemplate(w, name, nil)
+		render(templ, w, name, nil)
 	})
 }
 
@@ -58,7 +65,7 @@ func playHandler(templ *template.Template, db QuestionDatabase) http.Handler {
 		id := path.Base(r.URL.Path)
 		selected := db.SelectRandom(NumQuestions)
 
-		templ.ExecuteTemplate(w, "play.html", playContext{
+		render(templ, w, "play.html", playContext{
 			ID:        id,
 			Questions: selected,
 		})
@@ -149,7 +156,7 @@ func gameHandler(templ *template.Template, db GameDatabase) http.Handler {
 			return
 		}
 
-		templ.ExecuteTemplate(w, "game.html", gameContext{
+		render(templ, w, "game.html", gameContext{
 			ID:      id,
 			Answers: game,
 		})
