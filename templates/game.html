@@ -47,7 +47,7 @@
                 <tr>
                     {{ range $i, $a := .Answers }}
                     <td class="text-center {{ $a | tableClass }}">
-                        {{ $i }}
+                        {{ offset $i 1 }}
                     </td>
                     {{ end }}
                 </tr>

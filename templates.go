@@ -46,6 +46,10 @@ func targetScore(answers []Answer) float64 {
 	return float64(len(answers)) * ExpectedConfidence
 }
 
+func offset(value, offset int) int {
+	return value + offset
+}
+
 func loadTemplates() (*template.Template, error) {
 	templ := template.New("root").Funcs(template.FuncMap{
 		"safeHTML":   safeHTML,
@@ -54,6 +58,7 @@ func loadTemplates() (*template.Template, error) {
 		"evaluation": answerEvaluation,
 		"correct":    correctAnswers,
 		"target":     targetScore,
+		"offset":     offset,
 	})
 
 	templ, err := templ.ParseGlob("templates/*")
