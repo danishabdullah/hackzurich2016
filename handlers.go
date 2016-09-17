@@ -16,7 +16,7 @@ import (
 )
 
 // NumQuestions contains the number of questions for a single round.
-const NumQuestions = 10
+const NumQuestions = 1
 
 // ExpectedConfidence is the confidence that is expected from the user.
 const ExpectedConfidence = 0.5
