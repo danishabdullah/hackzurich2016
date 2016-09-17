@@ -16,7 +16,7 @@ import (
 )
 
 // NumQuestions contains the number of questions for a single round.
-const NumQuestions = 1
+const NumQuestions = 12
 
 // ExpectedConfidence is the confidence that is expected from the user.
 const ExpectedConfidence = 0.5
@@ -103,6 +103,7 @@ func (a Answer) Correct() bool {
 
 type gameContext struct {
 	ID      string   `json:"id"`
+	UserID  string   `json:"uid"`
 	Answers []Answer `json:"answers"`
 }
 
@@ -133,7 +134,7 @@ func submitHandler(db GameDatabase) http.Handler {
 			return
 		}
 
-		if err := db.Save(game.ID, game.Answers); err != nil {
+		if err := db.Save(r, game.UserID, game.ID, game.Answers); err != nil {
 			http.Error(w, fmt.Sprintf("Error saving game: %s", err), http.StatusInternalServerError)
 			return
 		}
@@ -150,7 +151,7 @@ func gameHandler(templ *template.Template, db GameDatabase) http.Handler {
 			http.Redirect(w, r, "/", http.StatusFound)
 		}
 
-		game, err := db.Get(id)
+		game, err := db.Get(r, id)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Game can not be loaded: %s", err), http.StatusNotFound)
 			return

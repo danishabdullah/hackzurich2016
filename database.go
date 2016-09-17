@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"net/http"
 	"os"
 	"strconv"
-	"sync"
+
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/datastore"
 )
 
 // Question is the basic data entity.
@@ -90,30 +93,45 @@ func (db QuestionDatabase) SelectRandom(num int) []Question {
 }
 
 type GameDatabase interface {
-	Save(id string, game []Answer) error
-	Get(id string) ([]Answer, error)
+	Save(r *http.Request, userID, id string, game []Answer) error
+	Get(r *http.Request, id string) ([]Answer, error)
 }
 
-type gameDatabase struct {
-	sync.RWMutex
-	inner map[string][]Answer
+type gameDatabase struct{}
+
+type GameEntity struct {
+	ID      string
+	UserID  string
+	Answers []Answer
 }
 
-func (db *gameDatabase) Save(id string, game []Answer) error {
-	db.Lock()
-	defer db.Unlock()
+func (db *gameDatabase) Save(r *http.Request, userID, id string, game []Answer) error {
+	ctx := appengine.NewContext(r)
 
-	db.inner[id] = game
+	e := &GameEntity{
+		ID:      id,
+		UserID:  userID,
+		Answers: game,
+	}
+
+	k := datastore.NewKey(ctx, "Game", id, 0, nil)
+	v, err := datastore.Put(ctx, k, e)
+	if err != nil {
+		return err
+	}
+
+	log.Printf("value: %+v", v)
 	return nil
 }
 
-func (db *gameDatabase) Get(id string) ([]Answer, error) {
-	db.RLock()
+func (db *gameDatabase) Get(r *http.Request, id string) ([]Answer, error) {
+	ctx := appengine.NewContext(r)
 
-	game, ok := db.inner[id]
-	if !ok {
-		return []Answer{}, fmt.Errorf("game not found: %s", id)
+	k := datastore.NewKey(ctx, "Game", id, 0, nil)
+	e := new(GameEntity)
+	if err := datastore.Get(ctx, k, e); err != nil {
+		return []Answer{}, err
 	}
 
-	return game, nil
+	return e.Answers, nil
 }

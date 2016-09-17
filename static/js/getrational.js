@@ -49,9 +49,12 @@ function initGame(gameID, questions) {
         } else {
             nextButton.attr("disabled", "disabled");
 
+            var user = firebase.auth().currentUser;
+
             $("#formData").val(JSON.stringify({
                 "id": gameID,
-                "answers": answers
+                "answers": answers,
+                "uid": user.uid
             }));
             $("#gameForm").submit();
         }
