@@ -22,7 +22,7 @@ func evaluateConfidence(correct int, questions int, statedConfidence float64) st
 		message = fmt.Sprintf("You're %s underconfident, by an estimated factor of %.1fX",
 			degree(pRight), factor)
 	} else {
-		message = fmt.Sprintf("You seem to be calibrated well. Your quota of correct answers is statistically in line with your stated confidence level of %g. Congratulations, you're a shining example of rationality!", stated_confidence)
+		message = fmt.Sprintf("You seem to be calibrated well. Your quota of correct answers is statistically in line with your stated confidence level of %g. Congratulations, you're a shining example of rationality!", statedConfidence)
 	}
 
 	return message
@@ -31,13 +31,12 @@ func evaluateConfidence(correct int, questions int, statedConfidence float64) st
 func degree(p float64) string {
 	if p > 0.2 {
 		return "not"
-	} else if (p > 0.05) {
+	} else if p > 0.05 {
 		return "likely"
-	} else if (p > 0.0001) {
+	} else if p > 0.0001 {
 		return "very likely"
-	} else {
-		return "definitely"
 	}
+	return "definitely"
 }
 
 func roundP(p float64) float64 {
