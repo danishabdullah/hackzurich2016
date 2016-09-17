@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"sync"
 )
 
 // Question is the basic data entity.
@@ -88,15 +89,28 @@ func (db QuestionDatabase) SelectRandom(num int) []Question {
 	return result
 }
 
-type GameDatabase map[string][]Answer
+type GameDatabase interface {
+	Save(id string, game []Answer) error
+	Get(id string) ([]Answer, error)
+}
 
-func (db GameDatabase) Save(id string, game []Answer) error {
-	db[id] = game
+type gameDatabase struct {
+	sync.RWMutex
+	inner map[string][]Answer
+}
+
+func (db *gameDatabase) Save(id string, game []Answer) error {
+	db.Lock()
+	defer db.Unlock()
+
+	db.inner[id] = game
 	return nil
 }
 
-func (db GameDatabase) Get(id string) ([]Answer, error) {
-	game, ok := db[id]
+func (db *gameDatabase) Get(id string) ([]Answer, error) {
+	db.RLock()
+
+	game, ok := db.inner[id]
 	if !ok {
 		return []Answer{}, fmt.Errorf("game not found: %s", id)
 	}
