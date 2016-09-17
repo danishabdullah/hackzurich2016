@@ -55,15 +55,34 @@
         </table>
     </div>
 
+    <div class="top-buffer">
+        <a href="/" class="btn btn-default " id="cancelGame">Home</a>
+        <a href="/play" class="btn btn-success pull-right" id="nextQuestion">New game</a>
+    </div>
+
+    <div class="panel panel-default top-buffer">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            <div class="panel-heading text-center">
+                History
+            </div>
+        </a>
+        <div id="collapseOne" class="panel-collapse collapse">
+            <table class="panel-body table">
+                <tbody>
+                    {{ range .History }}
+                    <tr>
+                        {{ range $i, $a := .Answers }}
+                        <td class="text-center {{ $a | tableClass }}">
+                            {{ $i }}
+                        </td>
+                        {{ end }}
+                    </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
-
-
-{{ range .Answers }}
-{{.}}
-{{ end }}
-
-<script>
-
-</script>
 
 {{ template "footer.html" . }}

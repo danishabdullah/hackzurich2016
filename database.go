@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
@@ -94,15 +95,18 @@ func (db QuestionDatabase) SelectRandom(num int) []Question {
 
 type GameDatabase interface {
 	Save(r *http.Request, userID, id string, game []Answer) error
-	Get(r *http.Request, id string) ([]Answer, error)
+	Get(r *http.Request, id string) (GameEntity, error)
+	List(r *http.Request, uid string) ([]GameEntity, error)
+	Last(r *http.Request, uid string) (*GameEntity, error)
 }
 
 type gameDatabase struct{}
 
 type GameEntity struct {
-	ID      string
-	UserID  string
-	Answers []Answer
+	ID      string    `json:"id"`
+	UserID  string    `json:"uid"`
+	Time    time.Time `json:"time"`
+	Answers []Answer  `json:"answers"`
 }
 
 func (db *gameDatabase) Save(r *http.Request, userID, id string, game []Answer) error {
@@ -111,27 +115,67 @@ func (db *gameDatabase) Save(r *http.Request, userID, id string, game []Answer) 
 	e := &GameEntity{
 		ID:      id,
 		UserID:  userID,
+		Time:    time.Now(),
 		Answers: game,
 	}
 
 	k := datastore.NewKey(ctx, "Game", id, 0, nil)
-	v, err := datastore.Put(ctx, k, e)
-	if err != nil {
+	if _, err := datastore.Put(ctx, k, e); err != nil {
 		return err
 	}
 
-	log.Printf("value: %+v", v)
 	return nil
 }
 
-func (db *gameDatabase) Get(r *http.Request, id string) ([]Answer, error) {
+func (db *gameDatabase) Get(r *http.Request, id string) (GameEntity, error) {
 	ctx := appengine.NewContext(r)
 
 	k := datastore.NewKey(ctx, "Game", id, 0, nil)
-	e := new(GameEntity)
-	if err := datastore.Get(ctx, k, e); err != nil {
-		return []Answer{}, err
+	var e GameEntity
+	if err := datastore.Get(ctx, k, &e); err != nil {
+		return GameEntity{}, err
 	}
 
-	return e.Answers, nil
+	return e, nil
+}
+
+func (db *gameDatabase) List(r *http.Request, uid string) ([]GameEntity, error) {
+	ctx := appengine.NewContext(r)
+
+	var result []GameEntity
+	q := datastore.NewQuery("Game").Filter("UserID =", uid).Order("ID")
+	for t := q.Run(ctx); ; {
+		var e GameEntity
+
+		_, err := t.Next(&e)
+		if err == datastore.Done {
+			break
+		}
+		if err != nil {
+			return []GameEntity{}, err
+		}
+
+		result = append(result, e)
+	}
+	return result, nil
+}
+
+func (db *gameDatabase) Last(r *http.Request, uid string) (*GameEntity, error) {
+	ctx := appengine.NewContext(r)
+
+	q := datastore.NewQuery("Game").Filter("UserID =", uid).Order("-Time").Limit(1)
+
+	result := new(GameEntity)
+	t := q.Run(ctx)
+
+	_, err := t.Next(result)
+	if err == datastore.Done {
+		return nil, nil
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }

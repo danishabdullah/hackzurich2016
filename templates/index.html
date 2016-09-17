@@ -17,7 +17,24 @@
             <button type="button" class="btn btn-default btn-sm center-block">How to play</button>
         </a>
     </div>
+    <div class="col-xs-12 top-buffer">
+        <a href="#" id="lastGame">
+            <button type="button" class="btn btn-default btn-sm center-block">Last game</button>
+        </a>
+    </div>
 
 </div>
+
+<script>
+$(document).ready(function() {
+    $("#lastGame").click(function() {
+        var user = firebase.auth().currentUser;
+
+        if (user) {
+            window.location.href = "/lastGame/" + user.uid;
+        }
+    })
+});
+</script>
 
 {{ template "footer.html" . }}

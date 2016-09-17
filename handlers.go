@@ -29,6 +29,7 @@ func initHandlers(mux *http.ServeMux, templ *template.Template, questions Questi
 	mux.Handle("/play", newGameHandler())
 	mux.Handle("/game/", gameHandler(templ, games))
 	mux.Handle("/game", submitHandler(games))
+	mux.Handle("/lastGame/", lastGameHandler(games))
 	mux.Handle("/about", simpleHandler(templ, "about.html"))
 	mux.Handle("/help", simpleHandler(templ, "help.html"))
 	mux.Handle("/", simpleHandler(templ, "index.html"))
@@ -101,12 +102,6 @@ func (a Answer) Correct() bool {
 		(aLow <= qHigh && aHigh >= qHigh)
 }
 
-type gameContext struct {
-	ID      string   `json:"id"`
-	UserID  string   `json:"uid"`
-	Answers []Answer `json:"answers"`
-}
-
 func submitHandler(db GameDatabase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -128,7 +123,7 @@ func submitHandler(db GameDatabase) http.Handler {
 			return
 		}
 
-		var game gameContext
+		var game GameEntity
 		if err := json.Unmarshal([]byte(data), &game); err != nil {
 			http.Error(w, fmt.Sprintf("Error parsing answers: %s", err), http.StatusBadRequest)
 			return
@@ -157,9 +152,39 @@ func gameHandler(templ *template.Template, db GameDatabase) http.Handler {
 			return
 		}
 
-		render(templ, w, "game.html", gameContext{
+		history, err := db.List(r, game.UserID)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Game list can not be loaded: %s", err), http.StatusInternalServerError)
+			return
+		}
+
+		render(templ, w, "game.html", struct {
+			ID      string
+			Answers []Answer
+			History []GameEntity
+		}{
 			ID:      id,
-			Answers: game,
+			Answers: game.Answers,
+			History: history,
 		})
+	})
+}
+
+func lastGameHandler(db GameDatabase) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		uid := path.Base(r.URL.Path)
+
+		game, err := db.Last(r, uid)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Game list can not be loaded: %s", err), http.StatusInternalServerError)
+			return
+		}
+
+		if game == nil {
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
+
+		http.Redirect(w, r, fmt.Sprintf("/game/%s", game.ID), http.StatusFound)
 	})
 }
