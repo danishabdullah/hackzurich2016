@@ -1,4 +1,4 @@
-package main
+package getrational
 
 import (
 	"encoding/json"
@@ -6,18 +6,6 @@ import (
 	"log"
 	"net/http"
 )
-
-func setupHandlers(templ *template.Template, db QuestionDatabase) http.Handler {
-	mux := http.NewServeMux()
-
-	mux.Handle("/api/questions/random", questionHandler(db))
-
-	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
-	mux.Handle("/play", playHandler(templ))
-	mux.Handle("/", indexHandler(templ))
-
-	return mux
-}
 
 func indexHandler(templ *template.Template) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

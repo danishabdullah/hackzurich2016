@@ -1,4 +1,4 @@
-package main
+package getrational
 
 import (
 	"encoding/csv"
