@@ -24,12 +24,13 @@ func initHandlers(mux *http.ServeMux, templ *template.Template, db QuestionDatab
 	mux.Handle("/play/", playHandler(templ, db))
 	mux.Handle("/play", newGameHandler())
 	mux.Handle("/game/", gameHandler(templ))
-	mux.Handle("/", indexHandler(templ))
+	mux.Handle("/about", simpleHandler(templ, "about.html"))
+	mux.Handle("/", simpleHandler(templ, "index.html"))
 }
 
-func indexHandler(templ *template.Template) http.Handler {
+func simpleHandler(templ *template.Template, name string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		templ.ExecuteTemplate(w, "index.html", nil)
+		templ.ExecuteTemplate(w, name, nil)
 	})
 }
 
