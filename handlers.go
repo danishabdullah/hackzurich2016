@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
 )
 
@@ -13,15 +14,14 @@ func indexHandler(templ *template.Template) http.Handler {
 	})
 }
 
-func playHandler(templ *template.Template) http.Handler {
-	context := Question{
-		Text:      "How many words are in the first Harry Potter Book?",
-		BoundLow:  76944,
-		BoundHigh: 76944,
-		Unit:      "words",
-	}
+func playHandler(templ *template.Template, db QuestionDatabase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		templ.ExecuteTemplate(w, "play.html", context)
+		// show one question as demo
+		idx := rand.Int() % len(db)
+		selected := db[idx]
+		log.Printf("Selected: %+v", selected)
+
+		templ.ExecuteTemplate(w, "play.html", selected)
 	})
 }
 
