@@ -87,9 +87,7 @@ function checkInput(minField, maxField) {
     return lowerNumber && upperNumber && lowerLessEqual;
 }
 
-
 // firebase stuff
-
 function signIn() {
     console.log("sign in");
 
@@ -111,55 +109,37 @@ function writeUserData(userId) {
   });
 }
 
-function writeGame(userId, precision) {
-    var gameData = {
-      uid: uid,
-      precision: precision
-    };
-
-  var newGameKey = firebase.database().ref().child('games').push().key;
-
-  // Write the new post's data simultaneously in the posts list and the user's post list.
-  var updates = {};
-  updates['/posts/' + newPostKey] = postData;
-  updates['/user-posts/' + uid + '/' + newPostKey] = postData;
-
-  firebase.database().ref('games/' + newGameKey).set(gameData);
-}
-
 $.getScript( "https://www.gstatic.com/firebasejs/3.4.0/firebase.js", function() {
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyDXcUg2dD4jQLfwngfwXGthO3dxPY-jQ_k",
-    authDomain: "get-rational.firebaseapp.com",
-    databaseURL: "https://get-rational.firebaseio.com",
-    storageBucket: "get-rational.appspot.com",
-    messagingSenderId: "641794277465"
-  };
-  firebase.initializeApp(config);
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyDXcUg2dD4jQLfwngfwXGthO3dxPY-jQ_k",
+        authDomain: "get-rational.firebaseapp.com",
+        databaseURL: "https://get-rational.firebaseio.com",
+        storageBucket: "get-rational.appspot.com",
+        messagingSenderId: "641794277465"
+    };
+    firebase.initializeApp(config);
 
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      // User is signed in.
-      var isAnonymous = user.isAnonymous;
-      var uid = user.uid;
-      console.log("user " + uid + " is signed in.");
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+            var isAnonymous = user.isAnonymous;
+            var uid = user.uid;
+            console.log("user " + uid + " is signed in.");
 
-      var userId = firebase.auth().currentUser.uid;
-      writeUserData(userId);
-      firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
-        if (!snapshot.val()) {
-          console.log("user does not exist");
-          writeUserData(userId);
+            var userId = firebase.auth().currentUser.uid;
+            firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+                if (!snapshot.val()) {
+                    console.log("user does not exist");
+                    writeUserData(userId);
+                } else {
+                    console.log("user exists");
+                }
+            });
         } else {
-          console.log("user exists");
+            // User is signed out.
+            console.log("user is signed out.");
+            signIn();
         }
-      });
-
-    } else {
-      // User is signed out.
-      console.log("user is signed out.");
-      signIn();
-    }
-});
+    });
 });
