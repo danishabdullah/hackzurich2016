@@ -11,6 +11,14 @@ func safeHTML(text string) template.HTML {
 	return template.HTML(text)
 }
 
+func rangeStr(lower, upper float64) string {
+	if lower == upper {
+		return fmt.Sprintf("%.0f", lower)
+	}
+
+	return fmt.Sprintf("%.0f-%.0f", lower, upper)
+}
+
 func formatJSON(data interface{}) template.JS {
 	bytes, err := json.Marshal(data)
 	if err != nil {
@@ -84,6 +92,7 @@ func offset(value, offset int) int {
 func loadTemplates() (*template.Template, error) {
 	templ := template.New("root").Funcs(template.FuncMap{
 		"safeHTML":              safeHTML,
+		"rangeStr":              rangeStr,
 		"json":                  formatJSON,
 		"tableClass":            tableClass,
 		"evaluation":            answerEvaluation,

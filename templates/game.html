@@ -47,7 +47,7 @@
                 <tr>
                     {{ range $i, $a := .Answers }}
                     <td class="text-center {{ $a | tableClass }}">
-                        <a href="#" data-toggle="popover" title="Question" data-content="{{ .Question.Text }}">
+                        <a href="#" data-toggle="popover" data-trigger="focus" title="{{ .Question.Text }}" data-content="{{ rangeStr .Question.BoundLow .Question.BoundHigh }} vs. {{ rangeStr .LowerBound .UpperBound }} {{ .Question.Unit}}">
                             {{ offset $i 1 }}
                         </a>
                     </td>
@@ -105,5 +105,15 @@
     </div>
 
 </div>
+
+<script>
+$(document).ready(function() {
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover({
+            placement: "top"
+        });
+    });
+});
+</script>
 
 {{ template "footer.html" . }}
