@@ -13,9 +13,9 @@
                 <tr>
                     <td>Correct</td>
                     <td>
-                        {{ .Answers | correct }} ({{ .Answers | correctPercent }})
                         {{ $correct := .Answers | correct }}
                         {{ $target := .Answers | target }}
+                        {{ $correct }} ({{ .Answers | correctPercent }})
                         {{ if lt $correct $target }}
                         <span class="glyphicon glyphicon glyphicon-download" aria-hidden="true"></span>
                         {{ else if gt $correct $target }}
@@ -23,7 +23,7 @@
                         {{ end }}
                     </td>
                     <td>Target</td>
-                    <td>{{ .Answers | target }}</td>
+                    <td>{{ $target }}</td>
                 </tr>
             </tbody>
         </table>
@@ -74,17 +74,17 @@
                     <tr>
                         <td>Correct</td>
                         <td>
-                            {{ $correct := .History | correctHistory }}
-                            {{ $correct }} ({{ .History | correctHistoryPercent }})
-                            {{ $target := .History | targetHistory }}
-                            {{ if lt $correct $target }}
+                            {{ $correctHistory := .History | correctHistory }}
+                            {{ $targetHistory := .History | targetHistory }}
+                            {{ $correctHistory }} ({{ .History | correctHistoryPercent }})
+                            {{ if lt $correctHistory $targetHistory }}
                             <span class="glyphicon glyphicon glyphicon-download" aria-hidden="true"></span>
-                            {{ else if gt $correct $target }}
+                            {{ else if gt $correctHistory $targetHistory }}
                             <span class="glyphicon glyphicon glyphicon-upload" aria-hidden="true"></span>
                             {{ end }}
                         </td>
                         <td>Target</td>
-                        <td>{{ .Answers | target }}</td>
+                        <td>{{ $targetHistory }}</td>
                     </tr>
                 </tbody>
             </table>
