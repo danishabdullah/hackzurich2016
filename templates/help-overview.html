@@ -38,7 +38,18 @@ $(document).ready(function() {
         skipLabel: "Exit",
         steps: [
             {
-                intro: "Hello!"
+                intro: `Welcome to Get Rational!
+                The goal of this project is to help you calibrate your confidence levels in probability estimates.
+                
+                It's not about knowing things about the world, it's about getting a better feeling for what you know about the world and the limits of this knowledge.`
+            },
+            {
+                explanation: `We will ask you Questions that will be hard to answer correctly, e.g.: "How many hairs are on your head?" we want ballpark estimates to these questions and don't expect exact answers (but if you know them, use them!).
+                Your answers will consist of a lower and upper bound for your estimate. The values should be chosen in a way that you think it's equally likely that the true answer is within or outside that range.
+                So when you have a question like "How many christians live in New York?" and you expect the answer to be ~500k but are relatively uncertain, you could give a lower value of 50k and an upper value of 5000k, about 50% of your answers should be correct.
+                Most people who try this for the first time end up with ~2 correct answers...
+
+                Good luck.`
             }
         ]
     }).start();
