@@ -2,6 +2,7 @@ package getrational
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"log"
 )
@@ -42,6 +43,16 @@ func correctAnswers(answers []Answer) float64 {
 	return float64(correct)
 }
 
+func correctAnswersPercent(answers []Answer) string {
+	correct := 0
+	for _, a := range answers {
+		if a.Correct() {
+			correct++
+		}
+	}
+	return fmt.Sprintf("%.0f%%", float64(correct)/float64(len(answers))*100)
+}
+
 func targetScore(answers []Answer) float64 {
 	return float64(len(answers)) * ExpectedConfidence
 }
@@ -52,13 +63,14 @@ func offset(value, offset int) int {
 
 func loadTemplates() (*template.Template, error) {
 	templ := template.New("root").Funcs(template.FuncMap{
-		"safeHTML":   safeHTML,
-		"json":       formatJSON,
-		"tableClass": tableClass,
-		"evaluation": answerEvaluation,
-		"correct":    correctAnswers,
-		"target":     targetScore,
-		"offset":     offset,
+		"safeHTML":       safeHTML,
+		"json":           formatJSON,
+		"tableClass":     tableClass,
+		"evaluation":     answerEvaluation,
+		"correct":        correctAnswers,
+		"correctPercent": correctAnswersPercent,
+		"target":         targetScore,
+		"offset":         offset,
 	})
 
 	templ, err := templ.ParseGlob("templates/*")

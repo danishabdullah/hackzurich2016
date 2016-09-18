@@ -143,7 +143,7 @@ func (db *gameDatabase) List(r *http.Request, uid string) ([]GameEntity, error) 
 	ctx := appengine.NewContext(r)
 
 	var result []GameEntity
-	q := datastore.NewQuery("Game").Filter("UserID =", uid).Order("ID")
+	q := datastore.NewQuery("Game").Filter("UserID =", uid).Order("-Time")
 	for t := q.Run(ctx); ; {
 		var e GameEntity
 

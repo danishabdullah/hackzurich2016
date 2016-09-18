@@ -6,15 +6,6 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            Your evaluation
-        </div>
-        <div class="panel-body">
-            {{ .Answers | evaluation }}
-        </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
             Your score
         </div>
         <table class="panel-body table">
@@ -22,7 +13,7 @@
                 <tr>
                     <td>Correct</td>
                     <td>
-                        {{ .Answers | correct }}
+                        {{ .Answers | correct }} ({{ .Answers | correctPercent }})
                         {{ $correct := .Answers | correct }}
                         {{ $target := .Answers | target }}
                         {{ if lt $correct $target }}
@@ -36,6 +27,15 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Your evaluation
+        </div>
+        <div class="panel-body">
+            {{ .Answers | evaluation }}
+        </div>
     </div>
 
     <div class="panel panel-default">
@@ -73,7 +73,7 @@
                     <tr>
                         {{ range $i, $a := .Answers }}
                         <td class="text-center {{ $a | tableClass }}">
-                            {{ $i }}
+                            {{ offset $i 1 }}
                         </td>
                         {{ end }}
                     </tr>
