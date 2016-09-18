@@ -22,7 +22,7 @@ func evaluateConfidence(correct int, questions int, statedConfidence float64) st
 		message = fmt.Sprintf("You're %s underconfident, by an estimated factor of %.1fX",
 			degree(pRight), factor)
 	} else {
-		message = fmt.Sprintf("You seem to be calibrated well. Your quota of correct answers is statistically in line with your stated confidence level of %g. Congratulations, you're a shining example of rationality!", statedConfidence)
+		message = fmt.Sprintf("Your quota of correct answers is statistically close to the expected %g. Congratulations, you seem to be well calibrated!", statedConfidence)
 	}
 
 	return message
