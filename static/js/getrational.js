@@ -18,10 +18,18 @@ function initGame(gameID, questions) {
         unitField.html(questions[idx].unit);
         minField.val("");
         maxField.val("");
+        minField.focus();
     }
     updateView(idx);
 
-    nextButton.click(function() {
+    function checkReturn(event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            nextButtonClick();
+        }
+    }
+
+    function nextButtonClick() {
         var valid = checkInput(minField, maxField);
 
         if (!valid) {
@@ -58,7 +66,11 @@ function initGame(gameID, questions) {
             }));
             $("#gameForm").submit();
         }
-    });
+    }
+
+    minField.keypress(checkReturn);
+    maxField.keypress(checkReturn);
+    nextButton.click(nextButtonClick);
 }
 
 function isNumber(n) {
