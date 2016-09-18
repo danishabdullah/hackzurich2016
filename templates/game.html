@@ -47,7 +47,9 @@
                 <tr>
                     {{ range $i, $a := .Answers }}
                     <td class="text-center {{ $a | tableClass }}">
-                        {{ offset $i 1 }}
+                        <a href="#" data-toggle="popover" title="Question" data-content="{{ .Question.Text }}">
+                            {{ offset $i 1 }}
+                        </a>
                     </td>
                     {{ end }}
                 </tr>
@@ -57,7 +59,7 @@
 
     <div class="top-buffer">
         <a href="/" class="btn btn-default " id="cancelGame">Home</a>
-        <a href="/play" class="btn btn-success pull-right" id="nextQuestion">New game</a>
+        <a href="/play" class="btn btn-success pull-right" id="nextQuestion">New round</a>
     </div>
 
     <div class="panel panel-default top-buffer">
@@ -68,6 +70,25 @@
         </a>
         <div id="collapseOne" class="panel-collapse collapse">
             <table class="panel-body table">
+                <tbody>
+                    <tr>
+                        <td>Correct</td>
+                        <td>
+                            {{ $correct := .History | correctHistory }}
+                            {{ $correct }} ({{ .History | correctHistoryPercent }})
+                            {{ $target := .History | targetHistory }}
+                            {{ if lt $correct $target }}
+                            <span class="glyphicon glyphicon glyphicon-download" aria-hidden="true"></span>
+                            {{ else if gt $correct $target }}
+                            <span class="glyphicon glyphicon glyphicon-upload" aria-hidden="true"></span>
+                            {{ end }}
+                        </td>
+                        <td>Target</td>
+                        <td>{{ .Answers | target }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
                 <tbody>
                     {{ range .History }}
                     <tr>

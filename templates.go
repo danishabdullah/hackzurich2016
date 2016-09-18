@@ -44,17 +44,37 @@ func correctAnswers(answers []Answer) float64 {
 }
 
 func correctAnswersPercent(answers []Answer) string {
-	correct := 0
-	for _, a := range answers {
-		if a.Correct() {
-			correct++
-		}
-	}
-	return fmt.Sprintf("%.0f%%", float64(correct)/float64(len(answers))*100)
+	correct := correctAnswers(answers)
+	return fmt.Sprintf("%.0f%%", correct/float64(len(answers))*100)
 }
 
 func targetScore(answers []Answer) float64 {
 	return float64(len(answers)) * ExpectedConfidence
+}
+
+func countHistory(games []GameEntity) (float64, int) {
+	correct := 0.0
+	count := 0
+	for _, g := range games {
+		correct += correctAnswers(g.Answers)
+		count += len(g.Answers)
+	}
+	return float64(correct), count
+}
+
+func correctAnswersHistory(games []GameEntity) float64 {
+	correct, _ := countHistory(games)
+	return correct
+}
+
+func correctAnswersHistoryPercent(games []GameEntity) string {
+	correct, count := countHistory(games)
+	return fmt.Sprintf("%.0f%%", correct/float64(count)*100)
+}
+
+func targetScoreHistory(games []GameEntity) float64 {
+	_, count := countHistory(games)
+	return float64(count) * ExpectedConfidence
 }
 
 func offset(value, offset int) int {
@@ -63,14 +83,17 @@ func offset(value, offset int) int {
 
 func loadTemplates() (*template.Template, error) {
 	templ := template.New("root").Funcs(template.FuncMap{
-		"safeHTML":       safeHTML,
-		"json":           formatJSON,
-		"tableClass":     tableClass,
-		"evaluation":     answerEvaluation,
-		"correct":        correctAnswers,
-		"correctPercent": correctAnswersPercent,
-		"target":         targetScore,
-		"offset":         offset,
+		"safeHTML":              safeHTML,
+		"json":                  formatJSON,
+		"tableClass":            tableClass,
+		"evaluation":            answerEvaluation,
+		"correct":               correctAnswers,
+		"correctPercent":        correctAnswersPercent,
+		"target":                targetScore,
+		"correctHistory":        correctAnswersHistory,
+		"correctHistoryPercent": correctAnswersHistoryPercent,
+		"targetHistory":         targetScoreHistory,
+		"offset":                offset,
 	})
 
 	templ, err := templ.ParseGlob("templates/*")
