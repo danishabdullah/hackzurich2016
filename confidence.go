@@ -1,4 +1,4 @@
-package getrational
+package predictiongame
 
 import "math"
 import "fmt"

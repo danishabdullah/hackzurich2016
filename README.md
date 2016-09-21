@@ -1,6 +1,6 @@
-# GetRational
+# PredictionGame
 
-GetRational is a webapp to help users calibrate their epistemic confidence.
+PredictionGame is a webapp to help users calibrate their epistemic confidence.
 Based on the Go programming language, with firebase in the background to add persistence - at some point with an actual login.
 
 We need to make judgements every day - for project deadlines, whether he likes us back (or not), how likely it is we will get that job and how hungry we are when ordering food. Humans tend to be overconfident in their subjective confidence concerning those estimates. Luckily, we think, it's possible to change that.
